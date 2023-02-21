@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+    <div id="maincontainer"></div>
+    <script>
+        const container = document.getElementById("maincontainer");
+        //header
+        const head = document.createElement("h2");
+        head.innerHTML = "Exercise 04: JavaScript&DOM";
+        container.appendChild(head);
+
+        //Button Date
+        const button = document.createElement("button");
+        button.innerHTML = "Click me on display Date and Time";
+
+        const date = document.createElement("button");
+        date.innerHTML = new Date();
+        date.hidden = true;
+
+        button.onclick = () => {
+            start();
+            button.hidden = true;
+            date.hidden = false;
+        };
+        container.appendChild(button);
+
+        let count = 0;
+        date.onclick = () => {
+            count = !count;
+            if (count == 0) {
+                start();
+            } else {
+                stop();
+            }
+        };
+        container.appendChild(date);
+
+        var c = 0;
+        const changecolor = () => {
+            backgroundcolor = ["purple", "aqua", "lightgreen", "yellow", "orange", "red"];
+            textcolor = ["yellow", "darkorange", "red", "purple", "blue", "lightgreen"];
+            date.style.color = textcolor[c];
+            date.style.backgroundColor = backgroundcolor[c];
+            c = (c + 1) % 6;
+        };
+
+        var w;
+        const start = () => {
+            w = new Worker("worker.js");
+            date.style.right = "0px";
+            date.style.top = "0px";
+            date.style.position = "fixed";
+            divInfo.style = "margin-top:61px;";
+
+            w.onmessage = (e) => {
+                date.innerHTML = e.data;
+                changecolor();
+            };
+        }
+
+        const stop = () => {
+            w.terminate();
+            date.style.position = "";
+            divInfo.style = "margin-top:18px;";
+        }
+
+        //Personal Info
+        const divInfo = document.createElement("div");
+        const Info = document.createElement("a");
+        Info.style.color = "pink";
+        divInfo.style.marginTop = "22px";
+        Info.innerHTML = "Personal Info";
+        Info.href = "#";
+
+        Info.onmouseleave = () => {
+            Info.style.color = "pink";
+            Info.style.backgroundColor = "transparent";
+        };
+
+        Info.onmouseover = () => {
+            Info.style.color = "blue";
+            Info.style.textDecoration = "underline";
+            Info.style.backgroundColor = "yellow";
+        };
+        divInfo.append(Info);
+
+        Info.onclick = () => {
+            if (PersonalData.style.display == "none") {
+                PersonalData.style.display = "";
+            } else if (PersonalData.style.display == "") {
+                PersonalData.style.display = "none";
+            }
+        }
+        divInfo.appendChild(Info);
+
+        //Data
+        const PersonalData = document.createElement('ul');
+        const data = ["Puntree Srichaikul, ID: 64010529", "Subject: Web Application Development", "Semester: 2"];
+        PersonalData.style.display = "none";
+        for (let i = 0; i < data.length; i++) {
+            const li = document.createElement("li");
+            li.innerHTML = data[i];
+            PersonalData.appendChild(li);
+        }
+        divInfo.appendChild(PersonalData);
+        maincontainer.appendChild(divInfo);
+
+        //Snapshots
+        const headSnap = document.createElement("h1");
+        headSnap.innerHTML = "Snapshots";
+        container.appendChild(headSnap);
+
+        //Pictures
+        const Snapshots = document.createElement("ul");
+
+        const Pictures = [
+            ["Firework", "https://www.mayoclinichealthsystem.org/-/media/national-files/images/hometown-health/2021/fireworks-against-dark-blue-sky.jpg width=300"],
+            ["Crest", "https://crestmartbd.com/iwoorguw/2021/02/wooden-promotional-trophy-1526627355-3040074.jpg"],
+            ["Action", "http://www.magpiedesignco.com/wp-content/uploads/2014/01/call-to-action-social-media1.jpg"],
+            ["Buffalo", "https://huntershillsafaris.co.za/wp-content/uploads/2022/08/2022-08-03_13h06_57-1024x546.png"],
+        ];
+
+        Pictures.forEach((x) => {
+            const li = document.createElement("li");
+            const choice = document.createElement("a");
+            choice.style.color = "blue"
+            choice.innerHTML = x[0];
+            choice.href = "#";
+            choice.onclick = () => {
+                img.src = x[1];
+            };
+            li.appendChild(choice);
+            Snapshots.appendChild(li);
+        });
+        container.appendChild(Snapshots);
+
+        const img = new Image();
+        img.src = "https://www.ce.kmitl.ac.th/api/main/banner/download/1";
+        container.appendChild(img);
+
+    </script>
+</body>
+
+</html>
